@@ -16,7 +16,17 @@ spring:
     mongodb:
       database: test
       port: 27017
-
+  rabbitmq:
+    username: guest
+    password: guest
+    host: localhost
+    port: 5672
+queue:
+  serie:
+    name: Serie-Service-Queue
+  movie:
+    name: Movie-Service-Queue
+message: catalog-service up
 eureka:
   client:
     register-with-eureka: true
@@ -54,22 +64,10 @@ resilience4j:
         registerHealthIndicator: true
         allowHealthIndicatorToFail: false
         automaticTransitionFromOpenToHalfOpenEnabled: true
-
-  #     HASTA ACA ESTA TERMINADO EL EJERCICIO (este q vamos a ver es otro módulo de resilience4j)
-  #  Lo que vemos en el retry es cuanto tiempo queremos esperar entre cada uno de los reintentos
-#  retry:
-#    instances:
-#      students:
-#        #        waitDuration: 1000
-#        #        maxAttempts: 3
-#        #        retryExceptions:
-#        #          - feign.FeignException$InternalServerError
-        #
-#        waitDuration: 1000
-#        #        Le decimos la cantidad de reintentos que queremos hacer
-#        maxAttempts: 3
-#        #        y la excepción contra la q queremos reintentar
-#        retryExceptions:
-#          - feign.FeignException$InternalServerError
-          #
-          #
+retry:
+  instances:
+    catalog-circuit:
+    waitDuration: 1000
+    maxAttempts : 3
+    retryExceptions:
+      - feign.FeignException$InternalServerError
