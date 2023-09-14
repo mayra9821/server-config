@@ -30,3 +30,46 @@ eureka:
     prefer-ip-address: true
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 10
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      movies:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15000
+        permittedNumberOfCallsInHalfOpenState: 3
+        registerHealthIndicator: true
+        allowHealthIndicatorToFail: false
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+  #     HASTA ACA ESTA TERMINADO EL EJERCICIO (este q vamos a ver es otro módulo de resilience4j)
+  #  Lo que vemos en el retry es cuanto tiempo queremos esperar entre cada uno de los reintentos
+#  retry:
+#    instances:
+#      students:
+#        #        waitDuration: 1000
+#        #        maxAttempts: 3
+#        #        retryExceptions:
+#        #          - feign.FeignException$InternalServerError
+        #
+#        waitDuration: 1000
+#        #        Le decimos la cantidad de reintentos que queremos hacer
+#        maxAttempts: 3
+#        #        y la excepción contra la q queremos reintentar
+#        retryExceptions:
+#          - feign.FeignException$InternalServerError
+          #
+          #
